@@ -1,10 +1,10 @@
-package com.hyunec.urlshortener
+package com.hyunec.urlshortenerapi
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class UrlShortenerApplicationTests {
+class UrlShortenerApiApplicationTests {
 
     @Test
     fun contextLoads() {

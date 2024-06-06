@@ -1,11 +1,11 @@
-package com.hyunec.urlshortener
+package com.hyunec.urlshortenerapi
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class UrlShortenerApplication
+class UrlShortenerApiApplication
 
 fun main(args: Array<String>) {
-    runApplication<UrlShortenerApplication>(*args)
+    runApplication<UrlShortenerApiApplication>(*args)
 }
