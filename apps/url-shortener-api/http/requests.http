@@ -9,5 +9,5 @@ Content-Type: application/json
   "url": "https://www.google.com/"
 }
 
-###
-GET {{host}}/api/v1/shorten-url/17B
+### 1: MQ==, 2: Mg==
+GET {{host}}/api/v1/shorten-url/MQ==
