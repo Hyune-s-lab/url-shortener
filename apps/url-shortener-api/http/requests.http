@@ -1,3 +1,13 @@
 ###
-###
 GET {{host}}/health
+
+###
+POST {{host}}/api/v1/shorten-url
+Content-Type: application/json
+
+{
+  "url": "https://www.google.com/"
+}
+
+###
+GET {{host}}/api/v1/shorten-url/17B
