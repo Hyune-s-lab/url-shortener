@@ -2,6 +2,7 @@ package com.hyunec.domain.urlshortener.service
 
 import com.hyunec.domain.urlshortener.ShortenUrl
 import com.hyunec.domain.urlshortener.ShortenUrlCreate
+import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import org.springframework.stereotype.Service
 
@@ -14,6 +15,6 @@ class ShortenUrlService(
     }
 
     fun findByUrlKey(urlKey: String): ShortenUrl {
-        return shortenUrlOutputPort.findByUrlKey(urlKey) ?: throw RuntimeException("Not found")
+        return shortenUrlOutputPort.findByUrlKey(urlKey) ?: throw NotFoundUrlKeyException()
     }
 }
