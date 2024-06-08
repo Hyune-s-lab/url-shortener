@@ -45,6 +45,12 @@ subprojects {
         }
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+        val kotestVersion: String by project
+        testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+
+        val datafakerVersion: String by project
+        testImplementation("net.datafaker:datafaker:$datafakerVersion")
     }
 
     kotlin {
