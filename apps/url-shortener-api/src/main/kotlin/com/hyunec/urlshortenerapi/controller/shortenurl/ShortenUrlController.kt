@@ -20,17 +20,17 @@ class ShortenUrlController(
         return shortenUrlService.create(request.url).run {
             ShortenUrlCreateResponse(
                 url = this.originalUrl,
-                urlKey = this.urlKey
+                urlkey = this.urlkey
             )
         }
     }
 
-    @GetMapping("/api/v1/shorten-url/{urlKey}")
-    fun findOriginUrl(@PathVariable urlKey: String): ShortenUrlFindResponse {
-        return shortenUrlService.findByUrlKey(urlKey).run {
+    @GetMapping("/api/v1/shorten-url/{urlkey}")
+    fun findOriginUrl(@PathVariable urlkey: String): ShortenUrlFindResponse {
+        return shortenUrlService.findByUrlKey(urlkey).run {
             ShortenUrlFindResponse(
                 url = this.originalUrl,
-                urlKey = this.urlKey
+                urlkey = this.urlkey
             )
         }
     }

@@ -23,8 +23,8 @@ class ShortenUrlOutputPortJpaAdapter(
     }
 
     @Transactional(readOnly = true)
-    override fun findByUrlKey(urlKey: String): ShortenUrl? {
-        val id = urlKey.base64UrlSafeDecode().toLong()
+    override fun findByUrlKey(urlkey: String): ShortenUrl? {
+        val id = urlkey.base64UrlSafeDecode().toLong()
 
         return repository.findByIdOrNull(id)?.toModel()
     }
@@ -34,7 +34,7 @@ class ShortenUrlOutputPortJpaAdapter(
         val idByteArray = this.id.toString().toByteArray()
         return ShortenUrl(
             originalUrl = this.url,
-            urlKey = Base64.UrlSafe.encode(idByteArray, 0, idByteArray.size)
+            urlkey = Base64.UrlSafe.encode(idByteArray, 0, idByteArray.size)
         )
     }
 

@@ -34,29 +34,29 @@ class ShortenUrlControllerTest(
         result
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.url").value(request.url))
-            .andExpect(jsonPath("$.urlKey").isString)
+            .andExpect(jsonPath("$.urlkey").isString)
             .andDo { log.debug("response={}", it.response.contentAsString) }
     }
 
     @ParameterizedTest
     @MethodSource("validCreateRequest")
     fun `shortenUrl 조회`(request: ShortenUrlCreateRequest) {
-        val urlKey = mockMvc.perform(
+        val urlkey = mockMvc.perform(
             post("/api/v1/shorten-url")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         ).andReturn()
             .let { objectMapper.readValue(it.response.contentAsString, ShortenUrlFindResponse::class.java) }
-            .urlKey
+            .urlkey
         val result = mockMvc.perform(
-            get("/api/v1/shorten-url/${urlKey}")
+            get("/api/v1/shorten-url/${urlkey}")
                 .contentType(MediaType.APPLICATION_JSON)
         )
 
         result
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.url").value("https://www.google.com"))
-            .andExpect(jsonPath("$.urlKey").value(urlKey))
+            .andExpect(jsonPath("$.urlkey").value(urlkey))
             .andDo { log.debug("response={}", it.response.contentAsString) }
     }
 

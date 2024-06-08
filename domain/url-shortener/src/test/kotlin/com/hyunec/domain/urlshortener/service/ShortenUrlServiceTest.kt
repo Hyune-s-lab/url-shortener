@@ -22,25 +22,25 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
     fun `shortenUrl 생성`(url: String) {
         shortenUrlService.create(url).let {
             it.originalUrl shouldBe url
-            it.urlKey shouldNotBe null
+            it.urlkey shouldNotBe null
         }
     }
 
     @ParameterizedTest
     @MethodSource("validUrl")
     fun `shortenUrl 조회`(url: String) {
-        val urlKey = shortenUrlService.create(url).urlKey
-        shortenUrlService.findByUrlKey(urlKey).let {
+        val urlkey = shortenUrlService.create(url).urlkey
+        shortenUrlService.findByUrlKey(urlkey).let {
             it.originalUrl shouldBe url
-            it.urlKey shouldBe urlKey
+            it.urlkey shouldBe urlkey
         }
     }
 
     @Test
-    fun `shortenUrl 조회 - 존재하지 않는 urlKey`() {
-        val urlKey = "MA==" // 0
+    fun `shortenUrl 조회 - 존재하지 않는 urlkey`() {
+        val urlkey = "MA==" // 0
         shouldThrow<NotFoundUrlKeyException> {
-            shortenUrlService.findByUrlKey(urlKey)
+            shortenUrlService.findByUrlKey(urlkey)
         }.message shouldBe NotFoundUrlKeyException.DEFAULT_MESSAGE
     }
 

@@ -14,7 +14,7 @@ class ShortenUrlService(
         return shortenUrlOutputPort.save(ShortenUrlCreate(url))
     }
 
-    fun findByUrlKey(urlKey: String): ShortenUrl {
-        return shortenUrlOutputPort.findByUrlKey(urlKey) ?: throw NotFoundUrlKeyException()
+    fun findByUrlKey(urlkey: String): ShortenUrl {
+        return shortenUrlOutputPort.findByUrlKey(urlkey) ?: throw NotFoundUrlKeyException()
     }
 }
