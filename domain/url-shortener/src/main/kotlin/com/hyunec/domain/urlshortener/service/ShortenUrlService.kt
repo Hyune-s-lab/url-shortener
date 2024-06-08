@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 class ShortenUrlService(
     private val shortenUrlOutputPort: ShortenUrlOutputPort,
 ) {
-    fun create(originalUrl: String): ShortenUrl {
-        return shortenUrlOutputPort.save(ShortenUrlCreate(originalUrl))
+    fun create(url: String): ShortenUrl {
+        return shortenUrlOutputPort.save(ShortenUrlCreate(url))
     }
 
     fun findByUrlKey(urlKey: String): ShortenUrl {
