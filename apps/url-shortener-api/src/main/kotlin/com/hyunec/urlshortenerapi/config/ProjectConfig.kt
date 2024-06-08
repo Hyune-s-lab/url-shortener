@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration
     basePackages = [
         "com.hyunec.urlshortenerapi",
         "com.hyunec.domain",
+        "com.hyunec.infrastructure",
     ]
 )
 class ProjectConfig

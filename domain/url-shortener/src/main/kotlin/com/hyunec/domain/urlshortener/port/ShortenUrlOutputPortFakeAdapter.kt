@@ -2,11 +2,10 @@ package com.hyunec.domain.urlshortener.port
 
 import com.hyunec.domain.shortenurl.ShortenUrl
 import com.hyunec.domain.shortenurl.ShortenUrlCreate
-import org.springframework.stereotype.Component
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-@Component
+//@Component
 class ShortenUrlOutputPortFakeAdapter(
     private val map: MutableMap<Long, ShortenUrl> = mutableMapOf(),
 ): ShortenUrlOutputPort {
