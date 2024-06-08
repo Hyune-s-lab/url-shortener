@@ -1,7 +1,7 @@
 package com.hyunec.domain.urlshortener.service
 
-import com.hyunec.domain.shortenurl.ShortenUrl
-import com.hyunec.domain.shortenurl.ShortenUrlCreate
+import com.hyunec.domain.urlshortener.ShortenUrl
+import com.hyunec.domain.urlshortener.ShortenUrlCreate
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import org.springframework.stereotype.Service
 

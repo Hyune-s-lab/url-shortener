@@ -1,8 +1,8 @@
 package com.hyunec.infrastructure.mysql.adapter
 
 import com.hyunec.common.support.KLogging
-import com.hyunec.domain.shortenurl.ShortenUrl
-import com.hyunec.domain.shortenurl.ShortenUrlCreate
+import com.hyunec.domain.urlshortener.ShortenUrl
+import com.hyunec.domain.urlshortener.ShortenUrlCreate
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import com.hyunec.infrastructure.mysql.entity.ShortenUrlEntity
 import org.springframework.data.repository.findByIdOrNull

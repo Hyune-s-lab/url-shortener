@@ -1,4 +1,4 @@
-package com.hyunec.domain.shortenurl
+package com.hyunec.domain.urlshortener
 
 data class ShortenUrl(
     val originalUrl: String,
