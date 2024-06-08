@@ -1,9 +1,9 @@
 package com.hyunec.urlshortenerapi.controller.shortenurl
 
+import com.hyunec.common.support.KLogging
 import com.hyunec.urlshortenerapi.AbstractUrlShortenerApiApplicationTests
 import com.hyunec.urlshortenerapi.controller.shortenurl.request.ShortenUrlCreateRequest
 import com.hyunec.urlshortenerapi.controller.shortenurl.response.ShortenUrlFindResponse
-import com.hyunec.urlshortenerapi.support.util.KLogging
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource

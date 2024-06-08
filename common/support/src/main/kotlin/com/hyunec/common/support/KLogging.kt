@@ -1,4 +1,4 @@
-package com.hyunec.urlshortenerapi.support.util
+package com.hyunec.common.support
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

@@ -36,6 +36,8 @@ subprojects {
     }
 
     dependencies {
+        implementation(project(":common:support"))
+
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 
         testImplementation("org.springframework.boot:spring-boot-starter-test") {

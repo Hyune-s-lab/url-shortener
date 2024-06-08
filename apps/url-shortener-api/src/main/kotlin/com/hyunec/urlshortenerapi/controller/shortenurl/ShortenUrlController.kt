@@ -1,10 +1,10 @@
 package com.hyunec.urlshortenerapi.controller.shortenurl
 
+import com.hyunec.common.support.KLogging
 import com.hyunec.domain.urlshortener.service.ShortenUrlService
 import com.hyunec.urlshortenerapi.controller.shortenurl.request.ShortenUrlCreateRequest
 import com.hyunec.urlshortenerapi.controller.shortenurl.response.ShortenUrlCreateResponse
 import com.hyunec.urlshortenerapi.controller.shortenurl.response.ShortenUrlFindResponse
-import com.hyunec.urlshortenerapi.support.util.KLogging
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
