@@ -1,0 +1,13 @@
+###
+GET {{host}}/health
+
+###
+POST {{host}}/api/v1/shorten-url
+Content-Type: application/json
+
+{
+  "url": "https://www.google.com/"
+}
+
+### 1: MQ==, 2: Mg==
+GET {{host}}/api/v1/shorten-url/MQ==

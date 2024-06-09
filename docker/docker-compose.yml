@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    mysql:
+        container_name: url-shortener-mysql
+        image: mysql:8.0.33
+        environment:
+            MYSQL_DATABASE: url_shortener
+            MYSQL_ROOT_PASSWORD: u1234
+        ports:
+            - "3306:3306"
