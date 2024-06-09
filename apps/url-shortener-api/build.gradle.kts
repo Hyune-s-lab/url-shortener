@@ -4,4 +4,9 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    val testcontainersVersion: String by project
+    implementation("org.testcontainers:testcontainers:${testcontainersVersion}")
+    implementation("org.testcontainers:junit-jupiter:${testcontainersVersion}")
+    implementation("org.testcontainers:mysql:${testcontainersVersion}")
 }
