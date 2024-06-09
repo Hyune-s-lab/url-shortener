@@ -6,6 +6,7 @@ import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -14,11 +15,17 @@ import kotlin.test.Test
 
 class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
 
-    private val shortenUrlOutputPortFakeAdapter: ShortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
-    private val shortenUrlService: ShortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter)
+    private lateinit var shortenUrlOutputPortFakeAdapter: ShortenUrlOutputPortFakeAdapter
+    private lateinit var shortenUrlService: ShortenUrlService
+
+    @BeforeEach
+    fun beforeEach() {
+        shortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
+        shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter)
+    }
 
     @ParameterizedTest
-    @MethodSource("validUrl")
+    @MethodSource("validUrls")
     fun `shortenUrl 생성`(url: String) {
         shortenUrlService.create(url).let {
             it.originalUrl shouldBe url
@@ -26,8 +33,16 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
         }
     }
 
+    @Test
+    fun `shortenUrl 생성 - 복수 개수`() {
+        val shortenUrls = validUrls.map { shortenUrlService.create(it) }
+        shortenUrls.forEachIndexed { index, shortenUrl ->
+            shortenUrl.originalUrl shouldBe validUrls[index]
+        }
+    }
+
     @ParameterizedTest
-    @MethodSource("validUrl")
+    @MethodSource("validUrls")
     fun `shortenUrl 조회`(url: String) {
         val urlkey = shortenUrlService.create(url).urlkey
         shortenUrlService.findByUrlKey(urlkey).let {
@@ -45,13 +60,15 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
     }
 
     companion object: KLogging() {
+        private val validUrls: List<String> = datafaker.collection(
+            { datafaker.internet().url() }
+        ).generate()
+
         @JvmStatic
-        private fun validUrl(): Stream<Arguments> {
-            return Stream.of(
-                Arguments.of(
-                    "https://www.google.com"
-                )
-            )
+        private fun validUrls(): Stream<Arguments> {
+            return validUrls.stream().map {
+                Arguments.of(it.toString())
+            }
         }
     }
 }
