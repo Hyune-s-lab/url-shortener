@@ -30,7 +30,9 @@ class ShortenUrlController(
         return shortenUrlService.findByUrlKey(urlkey).run {
             ShortenUrlFindResponse(
                 url = this.originalUrl,
-                urlkey = this.urlkey
+                urlkey = this.urlkey,
+                validStartAt = this.validStartAt.toEpochMilli(),
+                validEndAt = this.validEndAt.toEpochMilli()
             )
         }
     }

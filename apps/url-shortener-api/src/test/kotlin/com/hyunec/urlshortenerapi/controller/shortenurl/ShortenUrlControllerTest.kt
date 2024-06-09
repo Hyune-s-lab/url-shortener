@@ -24,7 +24,7 @@ class ShortenUrlControllerTest(
 
     @ParameterizedTest
     @MethodSource("validCreateRequest")
-    fun `shortenUrl 만들기`(request: ShortenUrlCreateRequest) {
+    fun `shortenUrl 생성`(request: ShortenUrlCreateRequest) {
         val result = mockMvc.perform(
             post("/api/v1/shorten-url")
                 .contentType(MediaType.APPLICATION_JSON)
