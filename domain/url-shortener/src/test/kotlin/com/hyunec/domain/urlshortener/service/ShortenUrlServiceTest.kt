@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.time.ZoneId
 import java.util.stream.Stream
 import kotlin.test.Test
 
@@ -30,6 +31,13 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
         shortenUrlService.create(url).let {
             it.originalUrl shouldBe url
             it.urlkey shouldNotBe null
+            it.validStartAt shouldNotBe null
+            it.validEndAt shouldNotBe null
+
+            log.info(
+                "validStartAt=${it.validStartAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}, " +
+                    "validEndAt=${it.validEndAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}"
+            )
         }
     }
 

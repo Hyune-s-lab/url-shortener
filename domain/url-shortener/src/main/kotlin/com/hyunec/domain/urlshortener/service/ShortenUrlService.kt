@@ -2,9 +2,11 @@ package com.hyunec.domain.urlshortener.service
 
 import com.hyunec.domain.urlshortener.ShortenUrl
 import com.hyunec.domain.urlshortener.ShortenUrlCreate
+import com.hyunec.domain.urlshortener.exception.ExpiredShortenUrlException
 import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 @Service
 class ShortenUrlService(
@@ -15,6 +17,12 @@ class ShortenUrlService(
     }
 
     fun findByUrlKey(urlkey: String): ShortenUrl {
-        return shortenUrlOutputPort.findByUrlKey(urlkey) ?: throw NotFoundUrlKeyException()
+        val shortenUrl = shortenUrlOutputPort.findByUrlKey(urlkey) ?: throw NotFoundUrlKeyException()
+
+        if (shortenUrl.validEndAt < Instant.now()) {
+            throw ExpiredShortenUrlException()
+        }
+
+        return shortenUrl
     }
 }

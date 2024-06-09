@@ -3,6 +3,7 @@ package com.hyunec.domain.urlshortener.service
 import com.hyunec.domain.urlshortener.ShortenUrl
 import com.hyunec.domain.urlshortener.ShortenUrlCreate
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
+import java.time.Instant
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -14,7 +15,9 @@ class ShortenUrlOutputPortFakeAdapter(
         val id = map.size.toLong() + 1
         val shortenUrl = ShortenUrl(
             originalUrl = shortenUrlCreate.originalUrl,
-            urlkey = Base64.UrlSafe.encode(id.toString().toByteArray(), 0, id.toString().toByteArray().size)
+            urlkey = Base64.UrlSafe.encode(id.toString().toByteArray(), 0, id.toString().toByteArray().size),
+            validStartAt = Instant.now(),
+            validEndAt = shortenUrlCreate.validEndAt,
         )
         map[id] = shortenUrl
         return shortenUrl
