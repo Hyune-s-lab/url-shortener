@@ -55,21 +55,21 @@ class ShortenUrlControllerTest(
 
         result
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.url").value("https://www.google.com"))
+            .andExpect(jsonPath("$.url").value(request.url))
             .andExpect(jsonPath("$.urlkey").value(urlkey))
             .andDo { log.debug("response={}", it.response.contentAsString) }
     }
 
     companion object: KLogging() {
+        private val validUrls: List<String> = datafaker.collection(
+            { datafaker.internet().url() }
+        ).generate()
+
         @JvmStatic
         private fun validCreateRequest(): Stream<Arguments> {
-            return Stream.of(
-                Arguments.of(
-                    ShortenUrlCreateRequest(
-                        url = "https://www.google.com"
-                    )
-                )
-            )
+            return validUrls.stream().map {
+                Arguments.of(ShortenUrlCreateRequest(url = it))
+            }
         }
     }
 }
