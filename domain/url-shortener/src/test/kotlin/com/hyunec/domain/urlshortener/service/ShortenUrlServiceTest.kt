@@ -2,6 +2,7 @@ package com.hyunec.domain.urlshortener.service
 
 import com.hyunec.common.support.KLogging
 import com.hyunec.domain.urlshortener.AbstractUrlShortenerDomainTests
+import com.hyunec.domain.urlshortener.component.PeriodValidationComponentAdapter
 import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
@@ -17,12 +18,16 @@ import kotlin.test.Test
 class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
 
     private lateinit var shortenUrlOutputPortFakeAdapter: ShortenUrlOutputPortFakeAdapter
+    private lateinit var periodValidationComponentFakeAdapter: PeriodValidationComponentAdapter
     private lateinit var shortenUrlService: ShortenUrlService
+
+    private val validPeriodSecond = 10L
 
     @BeforeEach
     fun beforeEach() {
         shortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
-        shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter)
+        periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter(validPeriodSecond)
+        shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter, periodValidationComponentFakeAdapter)
     }
 
     @ParameterizedTest
@@ -31,8 +36,7 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
         shortenUrlService.create(url).let {
             it.originalUrl shouldBe url
             it.urlkey shouldNotBe null
-            it.validStartAt shouldNotBe null
-            it.validEndAt shouldNotBe null
+            it.validStartAt shouldBe it.validEndAt.minusSeconds(validPeriodSecond)
 
             log.info(
                 "validStartAt=${it.validStartAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}, " +
