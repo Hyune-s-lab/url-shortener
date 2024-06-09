@@ -18,7 +18,11 @@ class ShortenUrlOutputPortJpaAdapter(
     @Transactional
     override fun save(shortenUrlCreate: ShortenUrlCreate): ShortenUrl {
         return repository.save(
-            ShortenUrlEntity(url = shortenUrlCreate.originalUrl)
+            ShortenUrlEntity(
+                url = shortenUrlCreate.originalUrl,
+                validStartAt = shortenUrlCreate.validStartAt,
+                validEndAt = shortenUrlCreate.validEndAt
+            )
         ).toModel()
     }
 
@@ -34,7 +38,9 @@ class ShortenUrlOutputPortJpaAdapter(
         val idByteArray = this.id.toString().toByteArray()
         return ShortenUrl(
             originalUrl = this.url,
-            urlkey = Base64.UrlSafe.encode(idByteArray, 0, idByteArray.size)
+            urlkey = Base64.UrlSafe.encode(idByteArray, 0, idByteArray.size),
+            validStartAt = this.validStartAt,
+            validEndAt = this.validEndAt
         )
     }
 
