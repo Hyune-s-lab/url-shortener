@@ -1,6 +1,7 @@
 package com.hyunec.urlshortenerapi.controller.shortenurl
 
 import com.hyunec.common.support.KLogging
+import com.hyunec.domain.urlshortener.model.ShortenUrlLevel
 import com.hyunec.urlshortenerapi.AbstractUrlShortenerApiApplicationTests
 import com.hyunec.urlshortenerapi.controller.shortenurl.request.ShortenUrlCreateRequest
 import com.hyunec.urlshortenerapi.controller.shortenurl.response.ShortenUrlFindResponse
@@ -68,7 +69,12 @@ class ShortenUrlControllerTest(
         @JvmStatic
         private fun validCreateRequest(): Stream<Arguments> {
             return validUrls.stream().map {
-                Arguments.of(ShortenUrlCreateRequest(url = it))
+                Arguments.of(
+                    ShortenUrlCreateRequest(
+                        level = ShortenUrlLevel.FREE,
+                        url = it
+                    )
+                )
             }
         }
     }

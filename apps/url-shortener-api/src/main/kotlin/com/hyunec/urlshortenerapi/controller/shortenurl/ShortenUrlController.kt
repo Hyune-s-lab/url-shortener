@@ -17,7 +17,7 @@ class ShortenUrlController(
 ) {
     @PostMapping("/api/v1/shorten-url")
     fun create(@RequestBody request: ShortenUrlCreateRequest): ShortenUrlCreateResponse {
-        return shortenUrlService.create(request.url).run {
+        return shortenUrlService.create(request.level, request.url).run {
             ShortenUrlCreateResponse(
                 url = this.originalUrl,
                 urlkey = this.urlkey
