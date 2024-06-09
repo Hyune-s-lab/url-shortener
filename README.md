@@ -29,3 +29,22 @@
 - [x] 기능 구현
     - [x] url 을 shorten-url (urlkey) 로 변환
     - [x] 생성된 shorten url 은 24 시간 동안 유효
+
+### phase2
+
+- [ ] 유효기간 세분화
+    - free: 1 day
+    - basic: 1 month
+    - premium: unlimited
+- [ ] testcontainers 적용
+    - local, test
+
+### phase3
+
+- [ ] redis 적용
+    - redisTemplate, ttl 1 day
+
+### phase4
+
+- [ ] redis 개선
+    - @Cacheable 적용
