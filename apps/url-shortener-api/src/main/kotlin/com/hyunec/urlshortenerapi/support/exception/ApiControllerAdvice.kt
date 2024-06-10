@@ -1,7 +1,11 @@
 package com.hyunec.urlshortenerapi.support.exception
 
 import com.hyunec.common.support.KLogging
+import com.hyunec.domain.urlshortener.exception.ExpiredShortenUrlException
+import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
+import com.hyunec.urlshortenerapi.support.exception.ErrorResponse.ErrorCode.EXPIRED_SHORTEN_URL
 import com.hyunec.urlshortenerapi.support.exception.ErrorResponse.ErrorCode.INVALID_REQUEST_BODY
+import com.hyunec.urlshortenerapi.support.exception.ErrorResponse.ErrorCode.NOT_FOUND_URL_KEY
 import com.hyunec.urlshortenerapi.support.exception.ErrorResponse.ErrorCode.UNEXPECTED_ERROR
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -40,6 +44,25 @@ class ApiControllerAdvice(
         return ErrorResponse(code = INVALID_REQUEST_BODY, message = e.message)
             .also { log.warn(e.message, e) }
     }
+
+
+    // domain exception
+
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(NotFoundUrlKeyException::class)
+    fun handleNotFoundUrlKeyException(e: NotFoundUrlKeyException): ErrorResponse {
+        return ErrorResponse(code = NOT_FOUND_URL_KEY)
+            .also { log.warn(e.message, e) }
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(ExpiredShortenUrlException::class)
+    fun handleExpiredShortenUrlException(e: ExpiredShortenUrlException): ErrorResponse {
+        return ErrorResponse(code = EXPIRED_SHORTEN_URL)
+            .also { log.warn(e.message, e) }
+    }
+
 
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)

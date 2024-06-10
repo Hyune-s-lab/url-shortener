@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.stream.Stream
+import kotlin.test.Test
 
 @AutoConfigureMockMvc
 class ShortenUrlControllerTest(
@@ -58,6 +59,19 @@ class ShortenUrlControllerTest(
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.url").value(request.url))
             .andExpect(jsonPath("$.urlkey").value(urlkey))
+            .andDo { log.debug("response={}", it.response.contentAsString) }
+    }
+
+    @Test
+    fun `shortenUrl 조회 - 존재하지 않는 urlkey`() {
+        val urlkey = "MA==" // 0
+        val result = mockMvc.perform(
+            get("/api/v1/shorten-url/${urlkey}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        result
+            .andExpect(status().isBadRequest)
             .andDo { log.debug("response={}", it.response.contentAsString) }
     }
 
