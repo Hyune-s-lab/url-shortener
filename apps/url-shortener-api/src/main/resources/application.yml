@@ -2,6 +2,7 @@ spring:
     config:
         import:
             - infra-mysql.yml
+            - infra-redis.yml
 
 logging:
     level:

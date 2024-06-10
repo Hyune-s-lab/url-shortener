@@ -1,5 +1,6 @@
 dependencies {
     implementation(project(":infrastructure:mysql"))
+    implementation(project(":infrastructure:redis"))
     implementation(project(":domain:url-shortener"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")

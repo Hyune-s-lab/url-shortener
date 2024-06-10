@@ -1,0 +1,22 @@
+spring:
+    redis:
+        host: ${REDIS_HOST}
+        port: ${REDIS_PORT}
+
+---
+spring.config.activate.on-profile: local
+
+spring:
+    redis:
+        host: ${testcontainers.redis.host}
+        port: ${testcontainers.redis.port}
+
+---
+spring.config.activate.on-profile: dev
+
+---
+spring.config.activate.on-profile: qa
+
+---
+spring.config.activate.on-profile: prod
+
