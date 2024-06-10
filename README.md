@@ -11,9 +11,9 @@
 - mysql, redis
 - testcontainers, datafaker
 
-### testcode - phase 1
+### testcode - phase 2
 
-![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/aa52a4a5-9c28-45e2-9c82-a1c567909fc2)
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/c3dfe974-b7ee-4f3f-95a1-2e861a95cd7f)
 
 ## feature
 
@@ -27,17 +27,18 @@
     - [x] POST /shorten-url
     - [x] GET /shorten-url/{urlkey}
 - [x] 기능 구현
-    - [x] url 을 shorten-url (urlkey) 로 변환
-    - [x] 생성된 shorten url 은 24 시간 동안 유효
+    - [x] url 을 urlkey (shorten-url) 로 변환
+    - [x] 생성된 urlkey 은 24 시간 동안 유효
 
-### phase2
+### ✅ phase2
 
-- [ ] 유효기간 세분화
-    - free: 1 day
-    - basic: 1 month
-    - premium: unlimited
-- [ ] testcontainers 적용
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/9c3ee484-e39d-425c-88f3-76feca4a595d)
+
+- [x] 유효기간 세분화
+    - free: 1 day, basic: 31 day, premium: unlimited
+- [x] testcontainers 적용
     - local, test
+- [x] 표준 예외 처리
 
 ### phase3
 

@@ -4,6 +4,7 @@ import com.hyunec.common.support.KLogging
 import com.hyunec.domain.urlshortener.AbstractUrlShortenerDomainTests
 import com.hyunec.domain.urlshortener.component.PeriodValidationComponentAdapter
 import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
+import com.hyunec.domain.urlshortener.model.ShortenUrlLevel
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -21,22 +22,20 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
     private lateinit var periodValidationComponentFakeAdapter: PeriodValidationComponentAdapter
     private lateinit var shortenUrlService: ShortenUrlService
 
-    private val validPeriodSecond = 10L
-
     @BeforeEach
     fun beforeEach() {
         shortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
-        periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter(validPeriodSecond)
+        periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter()
         shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter, periodValidationComponentFakeAdapter)
     }
 
     @ParameterizedTest
-    @MethodSource("validUrls")
-    fun `shortenUrl 생성`(url: String) {
-        shortenUrlService.create(url).let {
+    @MethodSource("validShortenUrlCreate")
+    fun `shortenUrl 생성`(shortenUrlLevel: ShortenUrlLevel, url: String) {
+        shortenUrlService.create(shortenUrlLevel, url).let {
             it.originalUrl shouldBe url
             it.urlkey shouldNotBe null
-            it.validStartAt shouldBe it.validEndAt.minusSeconds(validPeriodSecond)
+            it.validStartAt shouldBe it.validEndAt.minus(shortenUrlLevel.validPeriod)
 
             log.info(
                 "validStartAt=${it.validStartAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}, " +
@@ -47,16 +46,16 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
 
     @Test
     fun `shortenUrl 생성 - 복수 개수`() {
-        val shortenUrls = validUrls.map { shortenUrlService.create(it) }
+        val shortenUrls = validUrls.map { shortenUrlService.create(ShortenUrlLevel.FREE, it) }
         shortenUrls.forEachIndexed { index, shortenUrl ->
             shortenUrl.originalUrl shouldBe validUrls[index]
         }
     }
 
     @ParameterizedTest
-    @MethodSource("validUrls")
-    fun `shortenUrl 조회`(url: String) {
-        val urlkey = shortenUrlService.create(url).urlkey
+    @MethodSource("validShortenUrlCreate")
+    fun `shortenUrl 조회`(shortenUrlLevel: ShortenUrlLevel, url: String) {
+        val urlkey = shortenUrlService.create(shortenUrlLevel, url).urlkey
         shortenUrlService.findByUrlKey(urlkey).let {
             it.originalUrl shouldBe url
             it.urlkey shouldBe urlkey
@@ -77,9 +76,9 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
         ).generate()
 
         @JvmStatic
-        private fun validUrls(): Stream<Arguments> {
+        private fun validShortenUrlCreate(): Stream<Arguments> {
             return validUrls.stream().map {
-                Arguments.of(it.toString())
+                Arguments.of(ShortenUrlLevel.FREE, it)
             }
         }
     }

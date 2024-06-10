@@ -1,29 +1,23 @@
-package com.hyunec.urlshortenerapi
+package com.hyunec.urlshortenerapi.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.hyunec.common.support.KLogging
-import net.datafaker.Faker
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.core.annotation.Order
 import org.testcontainers.containers.MySQLContainer
 
-@ActiveProfiles(value = ["test"])
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-abstract class AbstractUrlShortenerApiApplicationTests {
-
-    @Autowired
-    lateinit var objectMapper: ObjectMapper
+@Profile("local")
+@Configuration
+@Order(0)
+class TestContainerConfig {
 
     companion object: KLogging() {
-        @JvmStatic
-        protected val datafaker = Faker()
-
         @JvmField
         val container = MySQLContainer("mysql:8.0.33").apply {
             withDatabaseName("url_shortener")
             withUsername("root")
             withPassword("u1234")
+            setPortBindings(listOf("23306:3306"))
         }
 
         init {

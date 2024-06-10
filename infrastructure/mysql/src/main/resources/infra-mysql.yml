@@ -20,10 +20,9 @@ spring:
         hibernate:
             ddl-auto: create
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/url_shortener
-        username: root
-        password: u1234
+        url: ${testcontainers.mysql.url}
+        username: ${testcontainers.mysql.username}
+        password: ${testcontainers.mysql.password}
 
 ---
 spring.config.activate.on-profile: dev
