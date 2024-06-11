@@ -24,6 +24,10 @@ class ShortenUrlOutputPortFakeAdapter(
         return shortenUrl
     }
 
+    override fun save(shortenUrl: ShortenUrl): ShortenUrl {
+        return map.putIfAbsent(shortenUrl.id, shortenUrl) ?: shortenUrl
+    }
+
     override fun findByUrlKey(urlkey: String): ShortenUrl? {
         val id = urlkey.decodeBase62().toLong()
         return map[id]
