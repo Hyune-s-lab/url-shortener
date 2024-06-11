@@ -40,10 +40,12 @@
     - local, test
 - [x] 표준 예외 처리
 
-### phase3
+### ✅ phase3
 
-- [ ] redis 적용
-    - redisTemplate, ttl 1 day
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/2f39f193-1232-45c5-a3b7-ec2dd3a4905d)
+
+- [x] redis 적용
+    - @RedisHash 활용, ttl 24 hour
 
 ### phase4
 
