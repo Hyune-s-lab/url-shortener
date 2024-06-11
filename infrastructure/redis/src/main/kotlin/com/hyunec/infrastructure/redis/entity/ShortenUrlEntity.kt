@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import java.time.Instant
 
-@RedisHash("shorten_url")
+@RedisHash(value = "shorten_url", timeToLive = 60 * 60 * 24)
 data class ShortenUrlEntity(
     @Id
     val id: Long,
