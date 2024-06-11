@@ -13,6 +13,14 @@ spring:
         password: ${JDBC_PASSWORD}
 
 ---
+spring.config.activate.on-profile: test
+
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: create
+
+---
 spring.config.activate.on-profile: local
 
 spring:
@@ -26,9 +34,6 @@ spring:
 
 ---
 spring.config.activate.on-profile: dev
-
----
-spring.config.activate.on-profile: qa
 
 ---
 spring.config.activate.on-profile: prod

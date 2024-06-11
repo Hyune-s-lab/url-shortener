@@ -18,15 +18,21 @@ import kotlin.test.Test
 
 class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
 
-    private lateinit var shortenUrlOutputPortFakeAdapter: ShortenUrlOutputPortFakeAdapter
+    private lateinit var shortenUrlOutputPortJpaFakeAdapter: ShortenUrlOutputPortFakeAdapter
+    private lateinit var shortenUrlOutputPortRedisFakeAdapter: ShortenUrlOutputPortFakeAdapter
     private lateinit var periodValidationComponentFakeAdapter: PeriodValidationComponentAdapter
     private lateinit var shortenUrlService: ShortenUrlService
 
     @BeforeEach
     fun beforeEach() {
-        shortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
+        shortenUrlOutputPortJpaFakeAdapter = ShortenUrlOutputPortFakeAdapter()
+        shortenUrlOutputPortRedisFakeAdapter = ShortenUrlOutputPortFakeAdapter()
         periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter()
-        shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter, periodValidationComponentFakeAdapter)
+        shortenUrlService = ShortenUrlService(
+            shortenUrlOutputPortJpaFakeAdapter,
+            shortenUrlOutputPortRedisFakeAdapter,
+            periodValidationComponentFakeAdapter
+        )
     }
 
     @ParameterizedTest
@@ -36,6 +42,8 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
             it.originalUrl shouldBe url
             it.urlkey shouldNotBe null
             it.validStartAt shouldBe it.validEndAt.minus(shortenUrlLevel.validPeriod)
+            shortenUrlOutputPortJpaFakeAdapter.findByUrlKey(it.urlkey) shouldNotBe null
+            shortenUrlOutputPortRedisFakeAdapter.findByUrlKey(it.urlkey) shouldBe null
 
             log.info(
                 "validStartAt=${it.validStartAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}, " +
@@ -56,9 +64,11 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
     @MethodSource("validShortenUrlCreate")
     fun `shortenUrl 조회`(shortenUrlLevel: ShortenUrlLevel, url: String) {
         val urlkey = shortenUrlService.create(shortenUrlLevel, url).urlkey
+
         shortenUrlService.findByUrlKey(urlkey).let {
             it.originalUrl shouldBe url
             it.urlkey shouldBe urlkey
+            shortenUrlOutputPortRedisFakeAdapter.findByUrlKey(urlkey) shouldNotBe null
         }
     }
 

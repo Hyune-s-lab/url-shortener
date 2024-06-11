@@ -4,6 +4,7 @@ import com.hyunec.common.support.KLogging
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.core.annotation.Order
+import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.MySQLContainer
 
 @Profile("local")
@@ -12,19 +13,32 @@ import org.testcontainers.containers.MySQLContainer
 class TestContainerConfig {
 
     companion object: KLogging() {
+        private const val MYSQL_PORT = "23306"
+        private const val REDIS_PORT = "26379"
+
         @JvmField
-        val container = MySQLContainer("mysql:8.0.33").apply {
+        val mysqlContainer = MySQLContainer("mysql:8.0.33").apply {
             withDatabaseName("url_shortener")
             withUsername("root")
             withPassword("u1234")
-            setPortBindings(listOf("23306:3306"))
+            setPortBindings(listOf("$MYSQL_PORT:3306"))
+        }
+
+        @JvmField
+        val redisContainer = GenericContainer("redis:6.2.6").apply {
+            exposedPorts = listOf(6379)
+            setPortBindings(listOf("$REDIS_PORT:6379"))
         }
 
         init {
-            container.start()
-            System.setProperty("spring.datasource.url", container.jdbcUrl)
-            System.setProperty("spring.datasource.username", container.username)
-            System.setProperty("spring.datasource.password", container.password)
+            mysqlContainer.start()
+            System.setProperty("spring.datasource.url", mysqlContainer.jdbcUrl)
+            System.setProperty("spring.datasource.username", mysqlContainer.username)
+            System.setProperty("spring.datasource.password", mysqlContainer.password)
+
+            redisContainer.start()
+            System.setProperty("spring.redis.host", redisContainer.host)
+            System.setProperty("spring.redis.port", REDIS_PORT)
         }
     }
 }
