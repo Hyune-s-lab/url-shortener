@@ -13,6 +13,7 @@ class ShortenUrlOutputPortFakeAdapter(
     override fun save(shortenUrlCreate: ShortenUrlCreate): ShortenUrl {
         val id = map.size.toLong() + 1
         val shortenUrl = ShortenUrl(
+            id = id,
             level = shortenUrlCreate.level,
             originalUrl = shortenUrlCreate.originalUrl,
             urlkey = Base64.UrlSafe.encode(id.toString().toByteArray(), 0, id.toString().toByteArray().size),

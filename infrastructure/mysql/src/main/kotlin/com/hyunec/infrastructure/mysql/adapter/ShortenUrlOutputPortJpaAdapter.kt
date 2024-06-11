@@ -38,6 +38,7 @@ class ShortenUrlOutputPortJpaAdapter(
     private fun ShortenUrlEntity.toModel(): ShortenUrl {
         val idByteArray = this.id.toString().toByteArray()
         return ShortenUrl(
+            id = this.id!!,
             level = this.level,
             originalUrl = this.url,
             urlkey = Base64.UrlSafe.encode(idByteArray, 0, idByteArray.size),
