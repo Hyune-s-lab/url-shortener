@@ -26,7 +26,11 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
     fun beforeEach() {
         shortenUrlOutputPortFakeAdapter = ShortenUrlOutputPortFakeAdapter()
         periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter()
-        shortenUrlService = ShortenUrlService(shortenUrlOutputPortFakeAdapter, periodValidationComponentFakeAdapter)
+        shortenUrlService = ShortenUrlService(
+            shortenUrlOutputPortFakeAdapter,
+            shortenUrlOutputPortFakeAdapter,
+            periodValidationComponentFakeAdapter
+        )
     }
 
     @ParameterizedTest
