@@ -4,6 +4,9 @@ spring:
         port: ${REDIS_PORT}
 
 ---
+spring.config.activate.on-profile: test
+
+---
 spring.config.activate.on-profile: local
 
 spring:
@@ -13,9 +16,6 @@ spring:
 
 ---
 spring.config.activate.on-profile: dev
-
----
-spring.config.activate.on-profile: qa
 
 ---
 spring.config.activate.on-profile: prod
