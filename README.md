@@ -42,7 +42,7 @@
 
 ### ✅ phase3
 
-![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/9cdd6aa7-4f4b-4e36-b967-8cafa3f7c5b4)
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/fdb1ea56-dc35-4002-91ab-853d139d0245)
 
 - [x] redis 적용
     - @RedisHash 활용, ttl 24 hour
