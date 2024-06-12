@@ -1,9 +1,9 @@
 # url-shortener
 
 - 입력받은 string 을 shorten string 으로 변환해주는 api 를 제공 합니다.
-- 직관적인 예시를 위해 url 을 대상으로 합니다.
-- hexagonal architecture 를 기반으로 하지만 일부 변형 하였습니다.
-- 각 phase 는 업무, 기능 요건 변경에 따른 점진적인 발전을 구분 합니다.
+    - 직관적인 예시를 위해 url 을 대상으로 합니다.
+- 실무와 유사하도록 업무, 기능 요건 변경을 phase 로 표현 했습니다.
+    - hexagonal architecture 를 기반 합니다.
 
 ### environment
 
@@ -11,9 +11,9 @@
 - mysql, redis
 - testcontainers, datafaker
 
-### testcode - phase 2
+### testcode - phase 3
 
-![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/c3dfe974-b7ee-4f3f-95a1-2e861a95cd7f)
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/8c22b72f-1588-4ddb-b46f-c1fd4c38e0c1)
 
 ## feature
 
@@ -42,7 +42,7 @@
 
 ### ✅ phase3
 
-![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/2f39f193-1232-45c5-a3b7-ec2dd3a4905d)
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/9cdd6aa7-4f4b-4e36-b967-8cafa3f7c5b4)
 
 - [x] redis 적용
     - @RedisHash 활용, ttl 24 hour
