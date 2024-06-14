@@ -1,15 +1,19 @@
 package com.hyunec.urlshortenerapi.controller.shortenurl
 
 import com.hyunec.common.support.KLogging
+import com.hyunec.domain.urlshortener.ShortenUrl
 import com.hyunec.domain.urlshortener.model.ShortenUrlLevel
 import com.hyunec.urlshortenerapi.AbstractUrlShortenerApiApplicationTests
 import com.hyunec.urlshortenerapi.controller.shortenurl.request.ShortenUrlCreateRequest
 import com.hyunec.urlshortenerapi.controller.shortenurl.response.ShortenUrlFindResponse
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.cache.CacheManager
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -22,7 +26,14 @@ import kotlin.test.Test
 @AutoConfigureMockMvc
 class ShortenUrlControllerTest(
     @Autowired private val mockMvc: MockMvc,
+
+    @Autowired private val shortenUrlCacheManager: CacheManager,
 ): AbstractUrlShortenerApiApplicationTests() {
+
+    @BeforeEach
+    fun beforeEach() {
+        shortenUrlCacheManager.getCache("shortenUrl")?.clear()
+    }
 
     @ParameterizedTest
     @MethodSource("validCreateRequest")
@@ -42,7 +53,7 @@ class ShortenUrlControllerTest(
 
     @ParameterizedTest
     @MethodSource("validCreateRequest")
-    fun `shortenUrl 조회`(request: ShortenUrlCreateRequest) {
+    fun `shortenUrl 조회 + redis cacheable`(request: ShortenUrlCreateRequest) {
         val urlkey = mockMvc.perform(
             post("/api/v1/shorten-url")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -60,6 +71,11 @@ class ShortenUrlControllerTest(
             .andExpect(jsonPath("$.url").value(request.url))
             .andExpect(jsonPath("$.urlkey").value(urlkey))
             .andDo { log.debug("response={}", it.response.contentAsString) }
+
+        shortenUrlCacheManager.getCache("shortenUrl")?.get(urlkey, ShortenUrl::class.java)?.let {
+            urlkey shouldBe it.urlkey
+            log.debug("urlkey=$urlkey, shortenUrl=$it")
+        }
     }
 
     @Test
