@@ -9,13 +9,13 @@ import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import com.hyunec.domain.urlshortener.model.ShortenUrlLevel
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
 class ShortenUrlService(
     @Qualifier("shortenUrlOutputPortJpaAdapter") private val shortenUrlOutputPortJpa: ShortenUrlOutputPort,
-    @Qualifier("shortenUrlOutputPortRedisAdapter") private val shortenUrlOutputPortRedis: ShortenUrlOutputPort,
     private val periodValidationComponent: PeriodValidationComponent,
 ) {
     fun create(shortenUrlLevel: ShortenUrlLevel, url: String): ShortenUrl {
@@ -31,11 +31,9 @@ class ShortenUrlService(
         )
     }
 
+    @Cacheable(value = ["shortenUrl"], key = "#urlkey", cacheManager = "shortenUrlCacheManager")
     fun findByUrlKey(urlkey: String): ShortenUrl {
-        val shortenUrl = shortenUrlOutputPortRedis.findByUrlKey(urlkey)
-            ?: shortenUrlOutputPortJpa.findByUrlKey(urlkey)?.also {
-                shortenUrlOutputPortRedis.save(it)
-            } ?: throw NotFoundUrlKeyException()
+        val shortenUrl = shortenUrlOutputPortJpa.findByUrlKey(urlkey) ?: throw NotFoundUrlKeyException()
 
         if (shortenUrl.validEndAt < Instant.now()) {
             throw ExpiredShortenUrlException()

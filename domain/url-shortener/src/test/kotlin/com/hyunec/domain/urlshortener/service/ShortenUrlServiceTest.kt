@@ -19,18 +19,15 @@ import kotlin.test.Test
 class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
 
     private lateinit var shortenUrlOutputPortJpaFakeAdapter: ShortenUrlOutputPortFakeAdapter
-    private lateinit var shortenUrlOutputPortRedisFakeAdapter: ShortenUrlOutputPortFakeAdapter
     private lateinit var periodValidationComponentFakeAdapter: PeriodValidationComponentAdapter
     private lateinit var shortenUrlService: ShortenUrlService
 
     @BeforeEach
     fun beforeEach() {
         shortenUrlOutputPortJpaFakeAdapter = ShortenUrlOutputPortFakeAdapter()
-        shortenUrlOutputPortRedisFakeAdapter = ShortenUrlOutputPortFakeAdapter()
         periodValidationComponentFakeAdapter = PeriodValidationComponentAdapter()
         shortenUrlService = ShortenUrlService(
             shortenUrlOutputPortJpaFakeAdapter,
-            shortenUrlOutputPortRedisFakeAdapter,
             periodValidationComponentFakeAdapter
         )
     }
@@ -43,7 +40,6 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
             it.urlkey shouldNotBe null
             it.validStartAt shouldBe it.validEndAt.minus(shortenUrlLevel.validPeriod)
             shortenUrlOutputPortJpaFakeAdapter.findByUrlKey(it.urlkey) shouldNotBe null
-            shortenUrlOutputPortRedisFakeAdapter.findByUrlKey(it.urlkey) shouldBe null
 
             log.info(
                 "validStartAt=${it.validStartAt.atZone(ZoneId.systemDefault()).toLocalDateTime()}, " +
@@ -68,7 +64,6 @@ class ShortenUrlServiceTest: AbstractUrlShortenerDomainTests() {
         shortenUrlService.findByUrlKey(urlkey).let {
             it.originalUrl shouldBe url
             it.urlkey shouldBe urlkey
-            shortenUrlOutputPortRedisFakeAdapter.findByUrlKey(urlkey) shouldNotBe null
         }
     }
 
