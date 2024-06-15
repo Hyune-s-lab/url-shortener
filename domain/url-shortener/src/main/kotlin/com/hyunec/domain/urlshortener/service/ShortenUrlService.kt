@@ -9,6 +9,7 @@ import com.hyunec.domain.urlshortener.exception.NotFoundUrlKeyException
 import com.hyunec.domain.urlshortener.model.ShortenUrlLevel
 import com.hyunec.domain.urlshortener.port.ShortenUrlOutputPort
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -38,6 +39,13 @@ class ShortenUrlService(
         if (shortenUrl.validEndAt < Instant.now()) {
             throw ExpiredShortenUrlException()
         }
+
+        return shortenUrl
+    }
+
+    @CacheEvict(value = ["shortenUrl"], key = "#urlkey", cacheManager = "shortenUrlCacheManager")
+    fun cacheEvict(urlkey: String): ShortenUrl {
+        val shortenUrl = shortenUrlOutputPortJpa.findByUrlKey(urlkey) ?: throw NotFoundUrlKeyException()
 
         return shortenUrl
     }
