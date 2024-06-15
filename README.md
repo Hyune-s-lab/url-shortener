@@ -4,6 +4,12 @@
     - 직관적인 예시를 위해 url 을 대상으로 합니다.
 - 실무와 유사하도록 업무, 기능 요건 변경을 phase 로 표현 했습니다.
     - hexagonal architecture 를 기반 합니다.
+- local, test profile 에 대해 testcontainers 를 적용 했습니다.
+    - `local` mysql port: 23306, redis port: 26379
+    - `test` mysql port: random, redis port: random
+- test 코드 실행시
+    - application test: testcontainers 가 실행 됩니다.
+    - domain test: stub 으로 대체되어 비즈니스 로직만을 검증 합니다.
 
 ### environment
 
@@ -11,9 +17,9 @@
 - mysql, redis
 - testcontainers, datafaker
 
-### testcode - phase 3
+### testcode - phase 4
 
-![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/8c22b72f-1588-4ddb-b46f-c1fd4c38e0c1)
+![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/ed2a68d4-3f9f-4f8b-b45f-63c9a950a273)
 
 ## feature
 
@@ -44,10 +50,9 @@
 
 ![image](https://github.com/Hyune-s-lab/url-shortener/assets/55722186/fdb1ea56-dc35-4002-91ab-853d139d0245)
 
-- [x] redis 적용
-    - @RedisHash 활용, ttl 24 hour
+- [x] redis 적용 - @RedisHash 활용, ttl 24 hour
 
-### phase4
+### ✅ phase4
 
-- [ ] redis 개선
-    - @Cacheable 적용
+- [x] redis 개선 - @Cacheable 적용
+- [x] evict 테스트 api 구현

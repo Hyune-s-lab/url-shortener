@@ -12,3 +12,6 @@ Content-Type: application/json
 
 ### 1: MQ==, 2: Mg==
 GET {{host}}/api/v1/shorten-url/MQ==
+
+### 1: MQ==, 2: Mg==
+GET {{host}}/api/v1/shorten-url/MQ==/evict

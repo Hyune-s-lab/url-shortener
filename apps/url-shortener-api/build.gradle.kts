@@ -4,7 +4,6 @@ dependencies {
     implementation(project(":domain:url-shortener"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     val testcontainersVersion: String by project
     implementation("org.testcontainers:testcontainers:${testcontainersVersion}")
